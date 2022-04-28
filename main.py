@@ -1,5 +1,5 @@
 
-# Automatically finds your target keyword in the google page search on each page with the search word located in your spreadsheet.
+# Automatically finds your target keyword in the google page search for each page with the search word located in your spreadsheet.
 # You first need to creeate your own OAuth Client IDs that can be found on https://console.cloud.google.com
 # Download the json file, put it in the same path and you are good to go.
 # P.S. You might get detected by reCaptcha which is a little annoying.
