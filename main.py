@@ -20,7 +20,7 @@ API_VERSION = 'v4'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-spreadsheet_id = '********************************************' # https://docs.google.com/spreadsheets/d/<this section>/edit#gid=0
+spreadsheet_id = '********************************************' # https://docs.google.com/spreadsheets/d/< THIS SECTION >/edit#gid=0
 mySpreadSheets = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
 
 worksheet_name = 'Sheet2!'
