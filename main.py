@@ -15,10 +15,6 @@ keywords = []
 # replace this with your target text
 text_to_find = 'I am difficult to find' 
 
-# The page number where your key word found will be stored in this array. If none, it will store zero.
-values = []
-
-
 
 # your desired browser where search bar is active
 url = 'https://www.google.com'
@@ -47,6 +43,8 @@ driver.get(url)
 time.sleep(5)
 
 
+# The page number where your key word found will be stored in this array. If none, it will store zero.
+values = []
 
 # This is where searching is executed, you will see chrome popping on you screen
 # It will search all the elements in your keywords array.
