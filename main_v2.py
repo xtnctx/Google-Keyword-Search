@@ -1,4 +1,3 @@
-
 # Automatically finds your target keyword in the google page search for each page with the search word located in your spreadsheet.
 # You might get detected by reCaptcha which is a little annoying.
 # This can be done by making an captcha automatic solver but has not yet been made.
