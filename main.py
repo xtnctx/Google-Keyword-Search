@@ -1,79 +1,56 @@
 
 # Automatically finds your target keyword in the google page search for each page with the search word located in your spreadsheet.
-# You first need to creeate your own OAuth Client IDs that can be found on https://console.cloud.google.com
-# Download the json file, put it in the same path and you are good to go.
-# P.S. You might get detected by reCaptcha which is a little annoying.
+# You might get detected by reCaptcha which is a little annoying.
 # This can be done by making an captcha automatic solver but has not yet been made.
 
 import time
-from Google import Create_Service
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+# Store all your keywords you want to search here. 
+# The element/s in this array is/are the words that you put in the search bar.
+# For example, ['who is albert einstein', 'how to bypass recaptcha', 'best programming language for automation']
+keywords = [] 
 
-
-# Prepairing access on Spreadsheet
-
-CLIENT_SECRET_FILE = 'client_secret.json'
-API_NAME = 'sheets'
-API_VERSION = 'v4'
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-
-service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-spreadsheet_id = '********************************************' # https://docs.google.com/spreadsheets/d/< THIS SECTION >/edit#gid=0
-mySpreadSheets = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
-
-worksheet_name = 'Sheet2!'
-
-# Get Items
-range_name = worksheet_name + 'A3:A32'
-result = service.spreadsheets().values().get(
-    spreadsheetId = spreadsheet_id,
-    range = range_name,
-    majorDimension='COLUMNS').execute()
-
-keywords, = result.get('values', [])
-
-
-cell_range_insert = 'C3' # Target/cursor
-
-def updateSheet(values):
-    value_range_body = {
-        'majorDimension': 'COLUMNS',
-        'values': [values]
-    }
-
-    # Update values on sheet
-    service.spreadsheets().values().update(
-        spreadsheetId = spreadsheet_id,
-        valueInputOption = 'USER_ENTERED',
-        range = worksheet_name + cell_range_insert,
-        body = value_range_body
-    ).execute()
-
-# [WebScraping / Automating] Finding the target on each page of Google Search
-
+# your desired browser where search bar is active
 url = 'https://www.google.com'
 
+# Every browser is different, so you can manually do this by hand.
+# If you right click then inspect the search bar of your browser,
+# you should see <input class='...' value='...' name='q'>.
+# same with id of next anchor button in google page since it doesn't have the element name.
+search_bar_element_name = 'q'
+next_anchor_element_id = 'pnnext'
+
+
+# I tried too many options to get rid of reCAPTCHA.
+# After some testing this one works. But at some point I still detected by 
+# reCAPTCHA when you have many keywords and you leave it running by itself.
 options = webdriver.ChromeOptions() 
 options.add_argument("start-maximized")
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
 
+# This opens your 'chromedriver.exe' but I added some delay because
+# We humans does not actually search immediately when the browser is successfully loaded.
+# Basically adding time delay means we are trying to imitate human activity.
 driver = webdriver.Chrome(options=options, executable_path='chromedriver.exe')
 driver.get(url)
 time.sleep(5)
 
+# replace this with your target text
+text_to_find = 'I am difficult to find' 
 
 
-text_to_find = 'I am difficult to find' # replace this with your target text
-
-
-# The page number where your key word found will be stored in the values. If none, it will store zero.
+# The page number where your key word found will be stored in this array. If none, it will store zero.
 values = []
 
+
+# This is where searching is executed, you will see chrome popping on you screen
+# It will search all the elements in your keywords array.
+# I also added 1s delay
 for text_field_search in keywords:
-    search = driver.find_element_by_name('q')
+    search = driver.find_element_by_name(search_bar_element_name)
     search.send_keys(text_field_search)
     search.send_keys(Keys.RETURN)
     
@@ -86,7 +63,7 @@ for text_field_search in keywords:
             values.append(page_number)
             break
         
-        next_page = driver.find_elements_by_id('pnnext')
+        next_page = driver.find_elements_by_id(next_anchor_element_id)
         if len(next_page) != 0:
             next_page[0].click()
             time.sleep(1)
@@ -96,8 +73,22 @@ for text_field_search in keywords:
             values.append(0)
             break
     
-    driver.find_element_by_name('q').clear()
-    print(values)
-
-updateSheet(values)
+    driver.find_element_by_name(search_bar_element_name).clear()
 driver.quit()
+
+
+
+# Finally, prints all the result
+spacing = 50
+print('-'*spacing*2)
+print(' '*(spacing-10), f'TEXT TO FIND = {text_to_find}')
+print('-'*spacing*2)
+print('{0:<50} | {1:<0}'.format("KEYWORD", "IS AVAILABLE AT PAGE"))
+print('-'*spacing*2)
+for i in range(len(keywords)):
+    result = '{0:<50} | {1:<0}'.format(keywords[i], str(values[i]))
+    print(result)
+    print('-'*spacing*2)
+
+
+
