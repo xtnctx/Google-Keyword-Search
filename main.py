@@ -46,7 +46,7 @@ time.sleep(5)
 # The page number where your key word found will be stored in this array. If none, it will store zero.
 values = []
 
-# This is where searching is executed, you will see chrome popping on you screen
+# This is where searching is executed, you will see chrome popping on your screen
 # It will search all the elements in your keywords array.
 # I also added 1s delay for every next page.
 for text_field_search in keywords:
