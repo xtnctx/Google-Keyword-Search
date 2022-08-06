@@ -81,9 +81,7 @@ driver.quit()
 # Finally, prints all the result
 spacing = 50
 print('-'*spacing*2)
-print(' '*(spacing-10), f'TEXT TO FIND = {text_to_find}')
-print('-'*spacing*2)
-print('{0:<50} | {1:<0}'.format("KEYWORD", "IS AVAILABLE AT PAGE"))
+print('{0:<50} | {1:<0}'.format("KEYWORD", f"{text_to_find} IS AVAILABLE AT PAGE"))
 print('-'*spacing*2)
 for i in range(len(keywords)):
     result = '{0:<50} | {1:<0}'.format(keywords[i], str(values[i]))
