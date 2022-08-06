@@ -48,7 +48,7 @@ values = []
 
 # This is where searching is executed, you will see chrome popping on you screen
 # It will search all the elements in your keywords array.
-# I also added 1s delay
+# I also added 1s delay for every next page.
 for text_field_search in keywords:
     search = driver.find_element_by_name(search_bar_element_name)
     search.send_keys(text_field_search)
