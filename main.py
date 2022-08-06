@@ -10,7 +10,15 @@ from selenium.webdriver.common.keys import Keys
 # Store all your keywords you want to search here. 
 # The element/s in this array is/are the words that you put in the search bar.
 # For example, ['who is albert einstein', 'how to bypass recaptcha', 'best programming language for automation']
-keywords = [] 
+keywords = []
+
+# replace this with your target text
+text_to_find = 'I am difficult to find' 
+
+# The page number where your key word found will be stored in this array. If none, it will store zero.
+values = []
+
+
 
 # your desired browser where search bar is active
 url = 'https://www.google.com'
@@ -38,12 +46,6 @@ driver = webdriver.Chrome(options=options, executable_path='chromedriver.exe')
 driver.get(url)
 time.sleep(5)
 
-# replace this with your target text
-text_to_find = 'I am difficult to find' 
-
-
-# The page number where your key word found will be stored in this array. If none, it will store zero.
-values = []
 
 
 # This is where searching is executed, you will see chrome popping on you screen
